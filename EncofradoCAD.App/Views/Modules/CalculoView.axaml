@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EncofradoCAD.App.ViewModels"
+             x:Class="EncofradoCAD.App.Views.Modules.CalculoView"
+             x:DataType="vm:MainViewModel"
+             x:CompileBindings="False">
+
+    <DockPanel>
+        <!-- ── Ribbon del módulo Cálculo ─────────────────────────── -->
+        <Border Classes="ribbon" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <!-- Grupo: Cálculo -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Classes="ribbonBig" Command="{Binding CalcularCommand}">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconCalc}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Calcular"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Materiales"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Exportar -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Click="OnExportPdf" Margin="0,0,4,0">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconFile}"/>
+                                <TextBlock Text="BOM PDF" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OnExportCsv" Margin="0,0,4,0">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconFile}"/>
+                                <TextBlock Text="BOM Excel" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OnExportPng">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconFile}"/>
+                                <TextBlock Text="Plano PNG" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Exportar"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Dirección óptima -->
+                <StackPanel Classes="ribbonGroup">
+                    <TextBlock Text="{Binding DireccionOptimaDescripcion}" Foreground="#B6FF00"
+                               VerticalAlignment="Center" MaxWidth="320" TextWrapping="Wrap"/>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Dirección óptima"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Área (m²) -->
+                <StackPanel Classes="ribbonGroup">
+                    <TextBlock Text="{Binding AreaDescripcion}" Foreground="#B6FF00"
+                               VerticalAlignment="Center" MaxWidth="320" TextWrapping="Wrap"/>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Área (m²)"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Lista de materiales para la losa ──────────────────── -->
+        <Border Background="#252525" Padding="20">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Lista de materiales para la losa"
+                           Foreground="White" FontWeight="Bold" FontSize="22" Margin="0,0,0,14"/>
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                    <TextBlock Text="Material" Foreground="#9AA5B1" FontWeight="Bold" FontSize="17"/>
+                    <TextBlock Grid.Column="1" Text="Cantidad" Foreground="#9AA5B1" FontWeight="Bold"
+                               FontSize="17" Margin="24,0,0,0"/>
+                </Grid>
+                <Border DockPanel.Dock="Top" Height="1" Background="#3A3A3A" Margin="0,0,0,8"/>
+                <ListBox ItemsSource="{Binding BOMVM.ListaMaterialesUI}" Background="Transparent"
+                         MaxWidth="760" HorizontalAlignment="Left" MinWidth="440">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="{Binding Nombre}" Foreground="#E0E0E0"
+                                           FontSize="16" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Cantidad}" Foreground="#B6FF00"
+                                           FontWeight="Bold" FontSize="16" Margin="24,0,0,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</UserControl>

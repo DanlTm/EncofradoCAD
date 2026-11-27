@@ -1,0 +1,42 @@
+# .NET build outputs
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+
+# Local SDK installation
+/.dotnet10/
+
+# Local backups and discarded code
+/_backup*/
+/_to_delete/
+
+# User-created projects and local secrets
+*.encproj
+.env
+.env.*
+!.env.example
+secrets/
+*.pfx
+*.p12
+*.key
+*.pem
+
+# Generated logs and diagnostic reports
+*.log
+/build-app-log.txt
+/test-log.txt
+/run-err.txt
+/run-log.txt
+/run-out.txt
+/caso_imagenes_reparto.txt
+/reparto_real.txt
+/dotnet-install.ps1
+/EncofradoCAD.Tests/DiagnosticoCasoImagenes.cs
+/EncofradoCAD.Tests/DiagnosticoReparto.cs
+
+# Editor and operating-system files
+.idea/
+Thumbs.db
+.DS_Store

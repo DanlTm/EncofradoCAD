@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EncofradoCAD.App.Views.Dialogs.TamanioColumnaDialog"
+        Title="Tamaño personalizado" Width="360" Height="250"
+        WindowStartupLocation="CenterOwner" CanResize="False" Background="#1E1E1E">
+
+    <Grid Margin="15" RowDefinitions="Auto,Auto,*,Auto">
+        <TextBlock Grid.Row="0" Text="Ingrese el tamaño de la columna (cm):"
+                   FontWeight="SemiBold" FontSize="14" Margin="0,0,0,12" Foreground="#E0E0E0"/>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
+            <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="Ancho (cm)" FontWeight="SemiBold" FontSize="11" Foreground="#E0E0E0"/>
+                <TextBox x:Name="txtAncho" Height="35" FontSize="14" TextAlignment="Center"
+                         Background="#3A3A3A" Foreground="#E0E0E0" BorderBrush="#404040" BorderThickness="1"/>
+            </StackPanel>
+            <TextBlock Grid.Column="1" Text="×" FontSize="18" Foreground="#9AA5B1"
+                       VerticalAlignment="Bottom" Margin="8,0,8,6"/>
+            <StackPanel Grid.Column="2" Spacing="4">
+                <TextBlock Text="Largo (cm)" FontWeight="SemiBold" FontSize="11" Foreground="#E0E0E0"/>
+                <TextBox x:Name="txtLargo" Height="35" FontSize="14" TextAlignment="Center"
+                         Background="#3A3A3A" Foreground="#E0E0E0" BorderBrush="#404040" BorderThickness="1"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock x:Name="txtError" Grid.Row="2" Foreground="#FF6B6B" TextWrapping="Wrap"
+                   Margin="0,12,0,0" IsVisible="False"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0" Spacing="10">
+            <Button Content="Cancelar" Width="90" Height="34"
+                    Background="#555555" Foreground="White" FontWeight="SemiBold" Click="BtnCancelar_Click"/>
+            <Button Content="Aceptar" Width="90" Height="34"
+                    Background="#16A085" Foreground="White" FontWeight="SemiBold"
+                    Click="BtnAceptar_Click" IsDefault="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

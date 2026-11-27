@@ -1,0 +1,139 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:EncofradoCAD.App.ViewModels"
+        xmlns:mod="clr-namespace:EncofradoCAD.App.Views.Modules"
+        x:Class="EncofradoCAD.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        x:CompileBindings="False"
+        Title="CADStudio"
+        Icon="/Assets/logo.ico"
+        Width="1320" Height="860"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        FontSize="14"
+        Background="#1E1E1E">
+
+    <Window.Styles>
+        <!-- ═══════════ Ribbon estilo AutoCAD ═══════════ -->
+
+        <!-- Pestañas superiores -->
+        <Style Selector="Button.ribbonTab">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C7CFD8"/>
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style Selector="Button.ribbonTab:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#333B45"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.ribbonTab.active /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2D333B"/>
+            <Setter Property="Foreground" Value="#B6FF00"/>
+        </Style>
+        <Style Selector="Button.ribbonTab.active">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <!-- Banda del ribbon -->
+        <Style Selector="Border.ribbon">
+            <Setter Property="Background" Value="#2D333B"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="#3C444E"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        </Style>
+
+        <!-- Grupo del ribbon (contenido arriba + etiqueta abajo) -->
+        <Style Selector="StackPanel.ribbonGroup">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="TextBlock.ribbonGroupLabel">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#8A94A0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+        <Style Selector="TextBlock.ribbonInlineLabel">
+            <Setter Property="Foreground" Value="#C7CFD8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+        </Style>
+        <Style Selector="Border.ribbonSep">
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Background" Value="#3C444E"/>
+            <Setter Property="Margin" Value="6,2,6,2"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+
+        <!-- Botones dentro del ribbon -->
+        <Style Selector="Border.ribbon Button">
+            <Setter Property="Background" Value="#3A424D"/>
+            <Setter Property="Foreground" Value="#E6EAEF"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="10,6"/>
+        </Style>
+        <Style Selector="Border.ribbon Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#4A5563"/>
+        </Style>
+
+        <!-- Íconos vectoriales monocromos dentro del ribbon -->
+        <Style Selector="Border.ribbon PathIcon">
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Foreground" Value="#E6EAEF"/>
+        </Style>
+
+        <!-- Botón grande (icono arriba, texto abajo) -->
+        <Style Selector="Button.ribbonBig">
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="MinWidth" Value="64"/>
+        </Style>
+        <Style Selector="PathIcon.ribbonBigIcon">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Foreground" Value="#E6EAEF"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.ribbonBigText">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
+    </Window.Styles>
+
+    <DockPanel>
+        <!-- ═══════════ Barra de aplicación + pestañas ═══════════ -->
+        <Border DockPanel.Dock="Top" Background="#21252B">
+            <StackPanel>
+                <!-- Título -->
+                <StackPanel Orientation="Horizontal" Margin="16,10,16,12">
+                    <TextBlock FontSize="20" FontWeight="Bold" VerticalAlignment="Center">
+                        <Run Text="CAD" Foreground="#B6FF00"/><Run Text="Studio" Foreground="White"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- Pestañas de módulos -->
+                <StackPanel Orientation="Horizontal" Margin="10,2,0,0">
+                    <Button x:Name="TabProyecto" Classes="ribbonTab" Content="Proyecto" Click="OnTabProyecto"/>
+                    <Button x:Name="TabModelado2D" Classes="ribbonTab" Content="Modelado 2D" Click="OnTab2D"/>
+                    <Button x:Name="TabModelado3D" Classes="ribbonTab" Content="Modelado 3D" Click="OnTab3D"/>
+                    <Button x:Name="TabCalculo" Classes="ribbonTab" Content="Cálculo" Click="OnTabCalculo"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══════════ Área de trabajo: módulos intercambiables ═══════════ -->
+        <Grid>
+            <mod:ProyectoView   x:Name="VistaProyecto" IsVisible="{Binding ProyectoVisible}"/>
+            <mod:Modelado2DView x:Name="Vista2D"       IsVisible="{Binding Modelado2DVisible}"/>
+            <mod:Modelado3DView x:Name="Vista3D"       IsVisible="{Binding Modelado3DVisible}"/>
+            <mod:CalculoView    x:Name="VistaCalculo"  IsVisible="{Binding CalculoVisible}"/>
+        </Grid>
+    </DockPanel>
+</Window>

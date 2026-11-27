@@ -1,0 +1,136 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EncofradoCAD.App.ViewModels"
+             x:Class="EncofradoCAD.App.Views.Modules.Modelado2DView"
+             x:DataType="vm:MainViewModel"
+             x:CompileBindings="False">
+
+    <DockPanel>
+        <!-- ── Ribbon del módulo 2D ──────────────────────────────── -->
+        <Border Classes="ribbon" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <!-- Grupo: Trazo -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Tipo:" Classes="ribbonInlineLabel"/>
+                        <ComboBox x:Name="ComboTrazo" SelectedIndex="0" Width="150" Margin="0,0,4,0"
+                                  SelectionChanged="OnTrazoChanged">
+                            <ComboBoxItem>Recto (línea)</ComboBoxItem>
+                            <ComboBoxItem>Curvo (media luna)</ComboBoxItem>
+                            <ComboBoxItem>Curvo (ovalado)</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Trazo"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Columnas -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Tamaño:" Classes="ribbonInlineLabel"/>
+                        <ComboBox x:Name="ComboColumna" SelectedIndex="2" Width="150" Margin="0,0,6,0"
+                                  SelectionChanged="OnColumnaChanged">
+                            <ComboBoxItem>C20 — 20×20 cm</ComboBoxItem>
+                            <ComboBoxItem>C25 — 25×25 cm</ComboBoxItem>
+                            <ComboBoxItem>C30 — 30×30 cm</ComboBoxItem>
+                            <ComboBoxItem>C35 — 35×35 cm</ComboBoxItem>
+                            <ComboBoxItem>C40 — 40×40 cm</ComboBoxItem>
+                            <ComboBoxItem>C45 — 45×45 cm</ComboBoxItem>
+                            <ComboBoxItem>Personalizada…</ComboBoxItem>
+                        </ComboBox>
+                        <Button Click="OnAgregarColumna">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconAdd}"/>
+                                <TextBlock Text="Agregar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Columnas"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Curvas -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <ToggleButton x:Name="ToggleMedidasCurva" IsChecked="True"
+                                      Click="OnToggleMedidasCurva"
+                                      ToolTip.Tip="Muestra/oculta la cuerda (recta inicio→fin) y su distancia en los lados curvos">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconCurve}"/>
+                                <TextBlock Text="Medidas de curva" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ToggleButton>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Curvas"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Losa -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Click="OnLimpiar">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconClear}"/>
+                                <TextBlock Text="Limpiar losa" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Losa"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Importar plano desde imagen -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Click="OnConvertirImagen"
+                                ToolTip.Tip="Convierte una imagen (PNG, JPG…) del plano en la losa 2D automáticamente, lista para 3D y cálculo">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconImage}"/>
+                                <TextBlock Text="Convertir imagen a losa" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Importar plano"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <!-- Grupo: Exportar modelo 2D -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Click="OnExportarPlano"
+                                ToolTip.Tip="Exporta el modelo 2D (losa, columnas, medidas y voladizo) a una imagen PNG">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconFile}"/>
+                                <TextBlock Text="Exportar 2D (PNG)" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Exportar"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Barra de estado (zoom) ────────────────────────────── -->
+        <Border DockPanel.Dock="Bottom" Background="#101018" Padding="10,3">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Rueda: zoom · Botón central: mover · Clic derecho: opciones"
+                           Foreground="#66707C" FontSize="13" VerticalAlignment="Center"/>
+                <PathIcon Data="{StaticResource IconZoom}" Width="13" Height="13" Foreground="#9AA5B1"
+                          VerticalAlignment="Center" Margin="16,0,0,0"/>
+                <TextBlock Text="Zoom:" Foreground="#9AA5B1" FontSize="13" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                <ProgressBar x:Name="PbZoom" Minimum="1.0" Maximum="10.0" Value="1.0"
+                             Width="120" Height="8" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TxtZoom" Text="100%" Foreground="#E0E0E0" FontWeight="Bold"
+                           FontSize="13" Width="48" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Área de dibujo 2D ─────────────────────────────────── -->
+        <Border x:Name="CanvasHost" Background="#161616" ClipToBounds="True"/>
+    </DockPanel>
+</UserControl>

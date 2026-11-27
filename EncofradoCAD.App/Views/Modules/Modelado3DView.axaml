@@ -1,0 +1,296 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EncofradoCAD.App.ViewModels"
+             x:Class="EncofradoCAD.App.Views.Modules.Modelado3DView"
+             x:DataType="vm:MainViewModel"
+             x:CompileBindings="False">
+
+    <UserControl.Styles>
+        <!-- Panel lateral de armado manual -->
+        <Style Selector="Border.panelArmado">
+            <Setter Property="Background" Value="#22272E"/>
+            <Setter Property="BorderBrush" Value="#3C444E"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Width" Value="272"/>
+        </Style>
+        <Style Selector="Border.panelArmado TextBlock.seccion">
+            <Setter Property="Foreground" Value="#B6FF00"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Margin" Value="0,2,0,8"/>
+        </Style>
+        <Style Selector="Border.panelArmado TextBlock.campo">
+            <Setter Property="Foreground" Value="#C7CFD8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Tirador para plegar/desplegar el panel -->
+        <Style Selector="Border.tiradorPanel">
+            <Setter Property="Background" Value="#1A1F26"/>
+            <Setter Property="BorderBrush" Value="#3C444E"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+        <Style Selector="Border.tiradorPanel Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9AA5B1"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Border.tiradorPanel Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2A313A"/>
+        </Style>
+        <Style Selector="Border.panelArmado Button">
+            <Setter Property="Background" Value="#3A424D"/>
+            <Setter Property="Foreground" Value="#E6EAEF"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Border.panelArmado Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#4A5563"/>
+        </Style>
+        <Style Selector="Border.panelArmado Button.principal">
+            <Setter Property="Background" Value="#2F6F3E"/>
+        </Style>
+
+        <!-- Selector de VOLADO del ribbon: compacto y con la medida bien legible -->
+        <Style Selector="ComboBox.volado">
+            <Setter Property="Width" Value="104"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="ToolTip.Tip" Value="Volado del encofrado respecto al filo de la losa. Gire la rueda del ratón encima para cambiarlo, o despliegue la lista."/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <!-- ── Ribbon del módulo 3D ──────────────────────────────── -->
+        <Border Classes="ribbon" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+
+                <!-- ════ Submódulo: CÁLCULO AUTOMÁTICO (por defecto) ════ -->
+                <StackPanel x:Name="Grupo3DAutomatico" Orientation="Horizontal">
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Estilo:" Classes="ribbonInlineLabel"/>
+                            <ComboBox x:Name="Combo3DEstilo" SelectedIndex="1" Width="150"
+                                      SelectionChanged="OnEstilo3DChanged">
+                                <ComboBoxItem>Sólido</ComboBoxItem>
+                                <ComboBoxItem>Transparente</ComboBoxItem>
+                                <ComboBoxItem>Alámbrico</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Vista"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <CheckBox x:Name="Chk3DTableros" Content="Mostrar tableros" IsChecked="True"
+                                      Foreground="White" Click="OnToggleTableros"/>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Elementos"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+                            <ToggleButton x:Name="Btn3DMoverEstructura" IsChecked="False"
+                                          Click="OnToggleMoverEstructura"
+                                          ToolTip.Tip="Con el modo activo, clic izquierdo + arrastrar mueve el encofrado, y W A S D lo ajustan al centímetro (con Mayúsculas, de 10 en 10 cm). El plano 2D y las columnas quedan fijos.">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <PathIcon Data="{StaticResource IconMove}"/>
+                                    <TextBlock Text="Mover estructura" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ToggleButton>
+                            <Button x:Name="Btn3DRestablecer" Click="OnRestablecerEstructura"
+                                    ToolTip.Tip="Devuelve la estructura a su posición original">
+                                <TextBlock Text="Restablecer" VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Estructura"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Click="OnActualizar3D">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <PathIcon Data="{StaticResource IconRefresh}"/>
+                                    <TextBlock Text="Actualizar 3D" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Acción"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+                </StackPanel>
+
+                <!-- ════ Interruptor entre submódulos (siempre visible) ════ -->
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+                        <ToggleButton x:Name="Btn3DArmadoManual" IsChecked="False"
+                                      Click="OnToggleArmadoManual"
+                                      ToolTip.Tip="Cambia al submódulo de armado manual: solo el plano, el voladizo y las piezas que usted coloque">
+                            <TextBlock Text="Armado manual" VerticalAlignment="Center"/>
+                        </ToggleButton>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Modo"/>
+                </StackPanel>
+
+                <!-- ════ Submódulo: ARMADO MANUAL ════ -->
+                <StackPanel x:Name="Grupo3DManual" Orientation="Horizontal" IsVisible="False">
+                    <Border Classes="ribbonSep"/>
+
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+                            <ToggleButton x:Name="BtnManualMover" IsChecked="False"
+                                          Click="OnToggleMoverEstructura"
+                                          ToolTip.Tip="Mueve la estructura completa: arrástrela con el clic izquierdo, o use W A S D para ajustarla al centímetro (con Mayúsculas, de 10 en 10 cm). Apáguelo para volver a colocar piezas.">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <PathIcon Data="{StaticResource IconMove}"/>
+                                    <TextBlock Text="Mover estructura" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ToggleButton>
+                            <Button x:Name="BtnManualColocarTableros" Click="OnColocarTableros" IsEnabled="False"
+                                    ToolTip.Tip="Reparte los tableros del catálogo sobre la estructura, respetando las columnas">
+                                <TextBlock Text="Colocar tableros" VerticalAlignment="Center"/>
+                            </Button>
+                            <ToggleButton x:Name="BtnManualCotasColumnas" IsChecked="True"
+                                          Click="OnToggleCotasColumnas"
+                                          ToolTip.Tip="Muestra u oculta las medidas rojas de los rieles y los separadores a la cara de las columnas. Verde = 5 a 15 cm (holgura de plegamiento), rojo = menos de 5 cm, ámbar = más de 15 cm.">
+                                <TextBlock x:Name="TextoCotasColumnas" Text="Ocultar medidas" VerticalAlignment="Center"/>
+                            </ToggleButton>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Armado manual"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+
+                    <!-- ════ VOLADO: interruptor + medida (5, 10, 15 o 20 cm) ════ -->
+                    <StackPanel Classes="ribbonGroup">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+                            <ToggleButton x:Name="BtnManualVolado" IsChecked="True"
+                                          Click="OnToggleVolado"
+                                          ToolTip.Tip="Muestra u oculta la línea entrecortada del volado alrededor de la losa en la vista 3D">
+                                <TextBlock Text="Volado" VerticalAlignment="Center"/>
+                            </ToggleButton>
+                            <ComboBox x:Name="ComboManualVolado" Classes="volado" SelectedIndex="3"
+                                      SelectionChanged="OnVoladoChanged"
+                                      PointerWheelChanged="OnVoladoRueda">
+                                <ComboBoxItem Tag="0.05">5 cm</ComboBoxItem>
+                                <ComboBoxItem Tag="0.10">10 cm</ComboBoxItem>
+                                <ComboBoxItem Tag="0.15">15 cm</ComboBoxItem>
+                                <ComboBoxItem Tag="0.20">20 cm</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBlock Classes="ribbonGroupLabel" Text="Volado"/>
+                    </StackPanel>
+
+                    <Border Classes="ribbonSep"/>
+                </StackPanel>
+
+                <!-- Ayuda de navegación: solo en CÁLCULO AUTOMÁTICO (en armado manual su sitio lo ocupa el volado) -->
+                <StackPanel x:Name="GrupoAyuda3D" Classes="ribbonGroup">
+                    <TextBlock x:Name="Ayuda3DTexto"
+                               Text="Clic derecho: rotar 360° · Clic izquierdo: mover cámara · Rueda: zoom"
+                               Foreground="#9AA5B1" VerticalAlignment="Center" MaxWidth="280" TextWrapping="Wrap"/>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Navegación"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Panel lateral de ARMADO MANUAL ────────────────────── -->
+        <Border x:Name="PanelArmado" Classes="panelArmado" DockPanel.Dock="Left" IsVisible="False">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="4">
+
+                    <!-- ── Base principal ── -->
+                    <TextBlock Classes="seccion" Text="1 · BASE PRINCIPAL"/>
+
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="0,6,0,0">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Classes="campo" Text="Riel" Margin="0,0,8,4"/>
+                        <ComboBox x:Name="ComboBaseRiel" Grid.Row="0" Grid.Column="1"
+                                  SelectionChanged="OnMedidasChanged"
+                                  HorizontalAlignment="Stretch" Margin="0,0,0,4"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Classes="campo" Text="Separador" Margin="0,0,8,4"/>
+                        <ComboBox x:Name="ComboBaseSeparador" Grid.Row="1" Grid.Column="1"
+                                  SelectionChanged="OnMedidasChanged"
+                                  HorizontalAlignment="Stretch" Margin="0,0,0,4"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Classes="campo" Text="Rieles en" Margin="0,0,8,4"/>
+                        <ComboBox x:Name="ComboEjeRiel" Grid.Row="2" Grid.Column="1" SelectedIndex="0"
+                                  HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                            <ComboBoxItem>Eje X (horizontal)</ComboBoxItem>
+                            <ComboBoxItem>Eje Y (vertical)</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
+
+                    <Button Content="Rehacer base principal" Click="OnRehacerBase" Margin="0,4,0,0"/>
+                    <Button x:Name="BtnLosaLista" Content="Losa lista" Classes="principal"
+                            Click="OnLosaLista" Margin="0,4,0,0"
+                            ToolTip.Tip="Bloquea la estructura tal como está: deja de admitir piezas y queda estática para poder colocar los tableros"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- ── Tirador: pliega y despliega el panel de armado ────── -->
+        <Border x:Name="TiradorPanel" Classes="tiradorPanel" DockPanel.Dock="Left" IsVisible="False">
+            <Button x:Name="BtnPlegarPanel" Click="OnPlegarPanel"
+                    ToolTip.Tip="Ocultar el panel de armado">
+                <TextBlock x:Name="IconoPlegarPanel" Text="‹" FontSize="15" FontWeight="Bold"/>
+            </Button>
+        </Border>
+
+        <!-- ── Cotas del ARMADO MANUAL ───────────────────────────────
+             Va ANCLADA ARRIBA, fuera del lienzo 3D: el mismo cuadro de siempre, pero en una franja compacta
+             para no estorbar la vista del armado. -->
+        <Border x:Name="CotasCard" DockPanel.Dock="Top"
+                HorizontalAlignment="Left" Margin="12,8,12,0"
+                Background="#D91E1E1E" BorderBrush="#3A3F44" BorderThickness="1"
+                CornerRadius="6" Padding="12,7" IsVisible="False">
+            <WrapPanel Orientation="Horizontal">
+                <TextBlock Text="Cotas del armado" Foreground="#22D3EE"
+                           FontWeight="Bold" FontSize="12"
+                           VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <TextBlock x:Name="CotasInfo" Foreground="White" FontSize="12"
+                           VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <TextBlock x:Name="CotasAviso" Foreground="#FF6B6B" FontSize="12"
+                           VerticalAlignment="Center" Margin="0,0,14,0" IsVisible="False"/>
+                <TextBlock x:Name="RegistroTexto" Foreground="#8A94A0" FontSize="11"
+                           VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="460"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- ── Área de vista 3D ──────────────────────────────────── -->
+        <Grid>
+            <Border x:Name="Canvas3DHost" Background="#121212" ClipToBounds="True"/>
+
+            <!-- Recuadro informativo: voladizo real por lado (reemplaza la línea entrecortada del 2D) -->
+            <Border x:Name="VoladizoCard"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12"
+                    Background="#D91E1E1E" BorderBrush="#3A3F44" BorderThickness="1"
+                    CornerRadius="6" Padding="12,9" IsHitTestVisible="False" IsVisible="False">
+                <StackPanel Spacing="3">
+                    <TextBlock Text="Voladizo del encofrado" Foreground="#B6FF00"
+                               FontWeight="Bold" FontSize="12"/>
+                    <TextBlock x:Name="VoladizoInfo" Foreground="White" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </DockPanel>
+</UserControl>

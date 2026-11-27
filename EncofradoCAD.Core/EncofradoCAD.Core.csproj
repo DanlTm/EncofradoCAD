@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Núcleo multiplataforma: sin dependencias de plataforma (WPF/Windows). -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Matemáticas para verificación estructural (motor de cálculo). -->
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <!-- Persistencia del formato de proyecto propio en JSON: System.Text.Json viene
+         incluido en el framework compartido de .NET, no requiere paquete. -->
+  </ItemGroup>
+
+</Project>

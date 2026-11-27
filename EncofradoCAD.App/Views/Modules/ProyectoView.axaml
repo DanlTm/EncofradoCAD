@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EncofradoCAD.App.ViewModels"
+             x:Class="EncofradoCAD.App.Views.Modules.ProyectoView"
+             x:DataType="vm:MainViewModel"
+             x:CompileBindings="False">
+
+    <DockPanel>
+        <!-- ── Ribbon del módulo Proyecto ────────────────────────── -->
+        <Border Classes="ribbon" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Classes="ribbonBig" Click="OnGuardar">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconSave}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Guardar"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="ribbonBig" Click="OnAbrir">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconOpen}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Abrir"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Archivo"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Classes="ribbonBig" Click="OnNuevo">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconNew}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Nuevo"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Proyecto"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Classes="ribbonBig" Click="OnAgregarImagenPlano"
+                                ToolTip.Tip="Carga una imagen (PNG, JPG…) del plano como fondo del módulo 2D para calcar sobre ella">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconImage}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Imagen de plano"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OnQuitarImagenPlano" VerticalAlignment="Center" Margin="6,0,0,0">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{StaticResource IconNew}"/>
+                                <TextBlock Text="Quitar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Plano de fondo"/>
+                </StackPanel>
+
+                <Border Classes="ribbonSep"/>
+
+                <StackPanel Classes="ribbonGroup">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Classes="ribbonBig" Click="OnConvertirPlanoAModelo"
+                                ToolTip.Tip="Toma una imagen (PNG, JPG…) del plano y la convierte en un modelo 2D funcional: losa editable y columnas, listo para 3D y cálculo">
+                            <StackPanel>
+                                <PathIcon Classes="ribbonBigIcon" Data="{StaticResource IconImage}"/>
+                                <TextBlock Classes="ribbonBigText" Text="Convertir plano a modelo 2D"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Classes="ribbonGroupLabel" Text="Plano → Modelo funcional"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Área de proyecto ──────────────────────────────────── -->
+        <Border Background="#1B1B1B" Padding="36">
+            <StackPanel Spacing="14" HorizontalAlignment="Left" VerticalAlignment="Top" MaxWidth="620">
+                <TextBlock Text="Proyecto" Foreground="#7C8794" FontSize="12" FontWeight="Bold"/>
+                <TextBlock Text="{Binding ProyectoActual.Nombre}" Foreground="White" FontSize="26" FontWeight="Bold"/>
+                <Border Height="1" Background="#333D4A" Margin="0,4,0,4"/>
+                <TextBlock TextWrapping="Wrap" Foreground="#C7CFD8" FontSize="13"
+                           Text="Usa este módulo para gestionar el archivo del proyecto. Guarda tu trabajo en un archivo .encproj, ábrelo más tarde o empieza un proyecto nuevo limpiando la losa y las columnas."/>
+                <StackPanel Spacing="4" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <PathIcon Data="{StaticResource IconSave}" Width="15" Height="15" Foreground="#B6FF00"/>
+                        <TextBlock Text="Guardar" Foreground="#B6FF00" FontWeight="Bold"/>
+                    </StackPanel>
+                    <TextBlock Text="Escribe el proyecto actual a un archivo .encproj." Foreground="#9AA5B1" FontSize="12"/>
+                </StackPanel>
+                <StackPanel Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <PathIcon Data="{StaticResource IconOpen}" Width="15" Height="15" Foreground="#B6FF00"/>
+                        <TextBlock Text="Abrir" Foreground="#B6FF00" FontWeight="Bold"/>
+                    </StackPanel>
+                    <TextBlock Text="Carga un proyecto .encproj guardado previamente." Foreground="#9AA5B1" FontSize="12"/>
+                </StackPanel>
+                <StackPanel Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <PathIcon Data="{StaticResource IconNew}" Width="15" Height="15" Foreground="#B6FF00"/>
+                        <TextBlock Text="Nuevo" Foreground="#B6FF00" FontWeight="Bold"/>
+                    </StackPanel>
+                    <TextBlock Text="Limpia la losa y las columnas para comenzar de cero." Foreground="#9AA5B1" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </DockPanel>
+</UserControl>
